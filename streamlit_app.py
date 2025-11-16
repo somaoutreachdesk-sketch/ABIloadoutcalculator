@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
+from matplotlib.ticker import FuncFormatter
 
 
 # ---------- CORE MATH ----------
@@ -80,8 +81,8 @@ if run_button:
         st.error("Extraction rate / total raids combo is invalid.")
     else:
         avg_win = total_earned / wins
-        L_BE = break_even_loss(p, avg_win)     # negative
-        abs_L_BE = abs(L_BE)                   # positive loadout cost
+        L_BE = break_even_loss(p, avg_win)
+        abs_L_BE = abs(L_BE)
         rr_be = avg_win / abs_L_BE
 
         st.subheader("Calculated Stats")
@@ -113,7 +114,6 @@ if run_button:
 
         col_left, col_right = st.columns([1, 2])
 
-        # Pie chart
         with col_left:
             fig1, ax1 = plt.subplots()
             ax1.pie(
@@ -125,19 +125,16 @@ if run_button:
             ax1.set_title("Win vs Loss Rate")
             st.pyplot(fig1)
 
-        # Equity simulations
         with col_right:
             st.markdown(
                 "*These are **example simulations** showing how different loadout costs "
                 "impact your long-term profit curve. They are **not recommended loadouts**.*"
             )
 
-            # Example loadout values
             loadout_expensive = abs_L_BE * 1.5
             loadout_break_even = abs_L_BE
             loadout_efficient = abs_L_BE * 0.5
 
-            # Convert to negative values for simulation math
             loss_bad = -loadout_expensive
             loss_break = -loadout_break_even
             loss_good = -loadout_efficient
@@ -148,8 +145,10 @@ if run_button:
 
             fig2, ax2 = plt.subplots()
 
-            # turn off scientific notation on y-axis
-            ax2.ticklabel_format(style="plain", axis="y")
+            # --- CLEAN MILLION FORMAT ---
+            def millions_formatter(x, pos):
+                return f"{x/1e6:.0f}M"
+            ax2.yaxis.set_major_formatter(FuncFormatter(millions_formatter))
 
             ax2.plot(
                 eq_bad,
@@ -169,7 +168,7 @@ if run_button:
 
             ax2.set_title("Example Equity Curve Simulations (1000 raids)")
             ax2.set_xlabel("Raids")
-            ax2.set_ylabel("Total Profit (koen)")
+            ax2.set_ylabel("Total Profit (M koen)")
             ax2.grid(True)
             ax2.legend()
             st.pyplot(fig2)
