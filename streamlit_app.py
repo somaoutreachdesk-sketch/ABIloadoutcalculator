@@ -83,10 +83,18 @@ if run_button:
 
         with col_a:
             st.metric("Win Rate", f"{p*100:.2f}%")
-            st.metric("Average Win", f"{avg_win:,.0f} koen", f"{avg_win/1e6:.2f} M")
+            # No delta argument here
+            st.metric(
+                "Average Win",
+                f"{avg_win:,.0f} koen ({avg_win/1e6:.2f} M)"
+            )
 
         with col_b:
-            st.metric("Break-even Loss", f"{L_BE:,.0f} koen", f"{abs_L_BE/1e6:.2f} M")
+            # No delta argument here either
+            st.metric(
+                "Break-even Loss",
+                f"{L_BE:,.0f} koen ({abs_L_BE/1e6:.2f} M)"
+            )
             st.metric("Break-even R:R", f"{rr_be:.2f} : 1")
 
         with col_c:
@@ -124,9 +132,21 @@ if run_button:
             eq_good = monte_carlo_sim(p, avg_win, loss_good)
 
             fig2, ax2 = plt.subplots()
-            ax2.plot(eq_bad, color="red", label=f"Too Expensive (~{abs(loss_bad)/1e6:.2f}M loss)")
-            ax2.plot(eq_break, color="orange", label=f"Break-even (~{abs_L_BE/1e6:.2f}M loss)")
-            ax2.plot(eq_good, color="green", label=f"Good Loadout (~{abs(loss_good)/1e6:.2f}M loss)")
+            ax2.plot(
+                eq_bad,
+                color="red",
+                label=f"Too Expensive (~{abs(loss_bad)/1e6:.2f}M loss)",
+            )
+            ax2.plot(
+                eq_break,
+                color="orange",
+                label=f"Break-even (~{abs_L_BE/1e6:.2f}M loss)",
+            )
+            ax2.plot(
+                eq_good,
+                color="green",
+                label=f"Good Loadout (~{abs(loss_good)/1e6:.2f}M loss)",
+            )
             ax2.set_title("Equity Curve Simulations (1000 raids)")
             ax2.set_xlabel("Raids")
             ax2.set_ylabel("Total Profit (koen)")
