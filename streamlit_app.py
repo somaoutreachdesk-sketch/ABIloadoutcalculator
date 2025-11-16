@@ -53,15 +53,20 @@ with col_input:
 with col_info:
     st.subheader("How to read this")
     st.markdown(
-        "- **Break-even loss** = maximum average koen you can lose per death and not "
-        "lose money long term.\n"
+        "- **Break-even loss** = the maximum average koen you can lose per death and "
+        "still break even long-term.\n"
+        "- **R:R (Risk-to-Reward)** = how much you win per successful extract compared "
+        "to how much you lose per death.\n"
+        "  - Example: **2.0 : 1** means your average win is **2× bigger** than your "
+        "average losing loadout.\n"
+        "  - Higher R:R = safer and more profitable long-term.\n"
         "- If your real losing loadout is **cheaper** than break-even → you are "
-        "**profitable**.\n"
-        "- The simulations show **example** outcomes if your loadout is:\n"
-        "  - too expensive (negative expectancy)\n"
-        "  - exactly at break-even\n"
-        "  - cheaper than break-even (profitable)\n"
-        "  These are **illustrations**, not recommended loadouts.\n"
+        "**profitable** over many raids.\n"
+        "- The simulations show **example outcomes** of running:\n"
+        "  - too expensive loadouts (negative expectancy)\n"
+        "  - break-even loadouts (neutral expectancy)\n"
+        "  - efficient loadouts (positive expectancy)\n"
+        "  These charts are **illustrations**, not recommended loadouts.\n"
     )
 
 st.markdown("---")
@@ -75,8 +80,8 @@ if run_button:
         st.error("Extraction rate / total raids combo is invalid.")
     else:
         avg_win = total_earned / wins
-        L_BE = break_even_loss(p, avg_win)     # negative value
-        abs_L_BE = abs(L_BE)                   # positive break-even loadout value
+        L_BE = break_even_loss(p, avg_win)     # negative
+        abs_L_BE = abs(L_BE)                   # positive loadout cost
         rr_be = avg_win / abs_L_BE
 
         st.subheader("Calculated Stats")
@@ -100,11 +105,11 @@ if run_button:
             st.markdown(
                 "**Rule of thumb:**\n\n"
                 f"- If your losing loadout is **< {abs_L_BE/1e6:.2f}M**, "
-                "you're winning long-term.\n"
-                f"- If it's **> {abs_L_BE/1e6:.2f}M**, you're bleeding over time."
+                "you’re profitable long-term.\n"
+                f"- If it’s **> {abs_L_BE/1e6:.2f}M**, you slowly bleed money.\n"
             )
 
-        # ---------- PIE + SIMULATIONS SIDE BY SIDE ----------
+        # ---------- PIE + SIMS SIDE BY SIDE ----------
 
         col_left, col_right = st.columns([1, 2])
 
@@ -120,20 +125,19 @@ if run_button:
             ax1.set_title("Win vs Loss Rate")
             st.pyplot(fig1)
 
-        # Equity simulations (examples)
+        # Equity simulations
         with col_right:
             st.markdown(
-                "*These are **example simulations** based on your stats. They show the "
-                "general long-term effect of running loadouts that are too expensive, "
-                "break-even, or efficient compared to your break-even value.*"
+                "*These are **example simulations** showing how different loadout costs "
+                "impact your long-term profit curve. They are **not recommended loadouts**.*"
             )
 
-            # Example loadout costs
+            # Example loadout values
             loadout_expensive = abs_L_BE * 1.5
             loadout_break_even = abs_L_BE
             loadout_efficient = abs_L_BE * 0.5
 
-            # Convert to negative values for the simulation math
+            # Convert to negative values for simulation math
             loss_bad = -loadout_expensive
             loss_break = -loadout_break_even
             loss_good = -loadout_efficient
@@ -143,6 +147,7 @@ if run_button:
             eq_good = monte_carlo_sim(p, avg_win, loss_good)
 
             fig2, ax2 = plt.subplots()
+
             ax2.plot(
                 eq_bad,
                 color="red",
