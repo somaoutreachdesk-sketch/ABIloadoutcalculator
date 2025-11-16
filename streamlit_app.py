@@ -32,7 +32,7 @@ st.markdown(
     "- Total Raids\n"
     "- Extraction Rate (%)\n"
     "- Total Earned (millions of koen)\n\n"
-    "The app will calculate your **break-even death cost** and simulate three loadouts."
+    "The app will calculate your **break-even death cost** and simulate three example loadouts."
 )
 
 col_input, col_info = st.columns([1, 1])
@@ -57,10 +57,11 @@ with col_info:
         "lose money long term.\n"
         "- If your real losing loadout is **cheaper** than break-even → you are "
         "**profitable**.\n"
-        "- The simulations show what happens if your loadout is:\n"
+        "- The simulations show **example** outcomes if your loadout is:\n"
         "  - too expensive (negative expectancy)\n"
         "  - exactly break-even\n"
         "  - cheaper than break-even (profitable)\n"
+        "  These are *illustrations*, not exact loadout recommendations.\n"
     )
 
 st.markdown("---")
@@ -83,17 +84,15 @@ if run_button:
 
         with col_a:
             st.metric("Win Rate", f"{p*100:.2f}%")
-            # No delta argument here
             st.metric(
                 "Average Win",
-                f"{avg_win:,.0f} koen ({avg_win/1e6:.2f} M)"
+                f"{avg_win:,.0f} koen ({avg_win/1e6:.2f} M)",
             )
 
         with col_b:
-            # No delta argument here either
             st.metric(
                 "Break-even Loss",
-                f"{L_BE:,.0f} koen ({abs_L_BE/1e6:.2f} M)"
+                f"{L_BE:,.0f} koen ({abs_L_BE/1e6:.2f} M)",
             )
             st.metric("Break-even R:R", f"{rr_be:.2f} : 1")
 
@@ -121,11 +120,18 @@ if run_button:
             ax1.set_title("Win vs Loss Rate")
             st.pyplot(fig1)
 
-        # Equity simulations
+        # Equity simulations (examples)
         with col_right:
-            loss_bad = -abs_L_BE * 1.5   # too expensive
-            loss_break = L_BE            # break-even
-            loss_good = -abs_L_BE * 0.5  # efficient
+            st.markdown(
+                "*The following equity curves are **example simulations** based on your "
+                "stats. They illustrate what happens if your average losing loadout is "
+                "too expensive, break-even, or efficient relative to your break-even "
+                "loss. They are **not exact loadout recommendations**.*"
+            )
+
+            loss_bad = -abs_L_BE * 1.5   # example: too expensive
+            loss_break = L_BE            # example: break-even
+            loss_good = -abs_L_BE * 0.5  # example: efficient/cheap
 
             eq_bad = monte_carlo_sim(p, avg_win, loss_bad)
             eq_break = monte_carlo_sim(p, avg_win, loss_break)
@@ -135,18 +141,19 @@ if run_button:
             ax2.plot(
                 eq_bad,
                 color="red",
-                label=f"Too Expensive (~{abs(loss_bad)/1e6:.2f}M loss)",
+                label=f"Example: Too Expensive (≈{abs(loss_bad)/1e6:.2f}M loss)",
             )
             ax2.plot(
                 eq_break,
                 color="orange",
-                label=f"Break-even (~{abs_L_BE/1e6:.2f}M loss)",
+                label=f"Example: Break-even (≈{abs_L_BE/1e6:.2f}M loss)",
             )
             ax2.plot(
                 eq_good,
                 color="green",
-                label=f"Good Loadout (~{abs(loss_good)/1e6:.2f}M loss)",
+                label=f"Example: Efficient (≈{abs(loss_good)/1e6:.2f}M loss)",
             )
+
             ax2.set_title("Equity Curve Simulations (1000 raids)")
             ax2.set_xlabel("Raids")
             ax2.set_ylabel("Total Profit (koen)")
