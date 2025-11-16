@@ -61,7 +61,7 @@ with col_info:
         "  - too expensive (negative expectancy)\n"
         "  - exactly break-even\n"
         "  - cheaper than break-even (profitable)\n"
-        "  These are *illustrations*, not exact loadout recommendations.\n"
+        "  These are *illustrations*, not recommended loadouts.\n"
     )
 
 st.markdown("---")
@@ -104,7 +104,7 @@ if run_button:
                 f"- If it's **> {abs_L_BE/1e6:.2f}M**, you're bleeding over time."
             )
 
-        # ---------- PIE + SIMS SIDE BY SIDE ----------
+        # ---------- PIE + SIMULATIONS SIDE BY SIDE ----------
 
         col_left, col_right = st.columns([1, 2])
 
@@ -123,15 +123,14 @@ if run_button:
         # Equity simulations (examples)
         with col_right:
             st.markdown(
-                "*The following equity curves are **example simulations** based on your "
-                "stats. They illustrate what happens if your average losing loadout is "
-                "too expensive, break-even, or efficient relative to your break-even "
-                "loss. They are **not exact loadout recommendations**.*"
+                "*These are **example simulations** based on your stats. They show what "
+                "happens if your average losing loadout is too expensive, break-even, "
+                "or efficient relative to your break-even loss.*"
             )
 
-            loss_bad = -abs_L_BE * 1.5   # example: too expensive
-            loss_break = L_BE            # example: break-even
-            loss_good = -abs_L_BE * 0.5  # example: efficient/cheap
+            loss_bad = -abs_L_BE * 1.5   # too expensive
+            loss_break = L_BE            # break-even
+            loss_good = -abs_L_BE * 0.5  # efficient
 
             eq_bad = monte_carlo_sim(p, avg_win, loss_bad)
             eq_break = monte_carlo_sim(p, avg_win, loss_break)
@@ -141,20 +140,20 @@ if run_button:
             ax2.plot(
                 eq_bad,
                 color="red",
-                label=f"Example: Too Expensive (≈{abs(loss_bad)/1e6:.2f}M loss)",
+                label=f"Too Expensive (≈{abs(loss_bad)/1e6:.2f}M loss)",
             )
             ax2.plot(
                 eq_break,
                 color="orange",
-                label=f"Example: Break-even (≈{abs_L_BE/1e6:.2f}M loss)",
+                label=f"Break-even (≈{abs_L_BE/1e6:.2f}M loss)",
             )
             ax2.plot(
                 eq_good,
                 color="green",
-                label=f"Example: Efficient (≈{abs(loss_good)/1e6:.2f}M loss)",
+                label=f"Efficient (≈{abs(loss_good)/1e6:.2f}M loss)",
             )
 
-            ax2.set_title("Equity Curve Simulations (1000 raids)")
+            ax2.set_title("Example Equity Curve Simulations (1000 raids)")
             ax2.set_xlabel("Raids")
             ax2.set_ylabel("Total Profit (koen)")
             ax2.grid(True)
