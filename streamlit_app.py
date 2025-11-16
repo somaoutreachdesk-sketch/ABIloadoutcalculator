@@ -59,9 +59,9 @@ with col_info:
         "**profitable**.\n"
         "- The simulations show **example** outcomes if your loadout is:\n"
         "  - too expensive (negative expectancy)\n"
-        "  - exactly break-even\n"
+        "  - exactly at break-even\n"
         "  - cheaper than break-even (profitable)\n"
-        "  These are *illustrations*, not recommended loadouts.\n"
+        "  These are **illustrations**, not recommended loadouts.\n"
     )
 
 st.markdown("---")
@@ -75,8 +75,8 @@ if run_button:
         st.error("Extraction rate / total raids combo is invalid.")
     else:
         avg_win = total_earned / wins
-        L_BE = break_even_loss(p, avg_win)
-        abs_L_BE = abs(L_BE)
+        L_BE = break_even_loss(p, avg_win)     # negative value
+        abs_L_BE = abs(L_BE)                   # positive break-even loadout value
         rr_be = avg_win / abs_L_BE
 
         st.subheader("Calculated Stats")
@@ -91,15 +91,15 @@ if run_button:
 
         with col_b:
             st.metric(
-                "Break-even Loss",
-                f"{L_BE:,.0f} koen ({abs_L_BE/1e6:.2f} M)",
+                "Break-even Losing Loadout Value",
+                f"{abs_L_BE:,.0f} koen ({abs_L_BE/1e6:.2f} M)",
             )
             st.metric("Break-even R:R", f"{rr_be:.2f} : 1")
 
         with col_c:
             st.markdown(
                 "**Rule of thumb:**\n\n"
-                f"- If your usual losing loadout is **< {abs_L_BE/1e6:.2f}M**, "
+                f"- If your losing loadout is **< {abs_L_BE/1e6:.2f}M**, "
                 "you're winning long-term.\n"
                 f"- If it's **> {abs_L_BE/1e6:.2f}M**, you're bleeding over time."
             )
@@ -123,14 +123,20 @@ if run_button:
         # Equity simulations (examples)
         with col_right:
             st.markdown(
-                "*These are **example simulations** based on your stats. They show what "
-                "happens if your average losing loadout is too expensive, break-even, "
-                "or efficient relative to your break-even loss.*"
+                "*These are **example simulations** based on your stats. They show the "
+                "general long-term effect of running loadouts that are too expensive, "
+                "break-even, or efficient compared to your break-even value.*"
             )
 
-            loss_bad = -abs_L_BE * 1.5   # too expensive
-            loss_break = L_BE            # break-even
-            loss_good = -abs_L_BE * 0.5  # efficient
+            # Example loadout costs
+            loadout_expensive = abs_L_BE * 1.5
+            loadout_break_even = abs_L_BE
+            loadout_efficient = abs_L_BE * 0.5
+
+            # Convert to negative values for the simulation math
+            loss_bad = -loadout_expensive
+            loss_break = -loadout_break_even
+            loss_good = -loadout_efficient
 
             eq_bad = monte_carlo_sim(p, avg_win, loss_bad)
             eq_break = monte_carlo_sim(p, avg_win, loss_break)
@@ -140,17 +146,17 @@ if run_button:
             ax2.plot(
                 eq_bad,
                 color="red",
-                label=f"Too Expensive (≈{abs(loss_bad)/1e6:.2f}M loss)",
+                label=f"Too Expensive Loadout (≈{loadout_expensive/1e6:.2f}M koen)",
             )
             ax2.plot(
                 eq_break,
                 color="orange",
-                label=f"Break-even (≈{abs_L_BE/1e6:.2f}M loss)",
+                label=f"Break-even Loadout (≈{loadout_break_even/1e6:.2f}M koen)",
             )
             ax2.plot(
                 eq_good,
                 color="green",
-                label=f"Efficient (≈{abs(loss_good)/1e6:.2f}M loss)",
+                label=f"Efficient Loadout (≈{loadout_efficient/1e6:.2f}M koen)",
             )
 
             ax2.set_title("Example Equity Curve Simulations (1000 raids)")
@@ -160,6 +166,6 @@ if run_button:
             ax2.legend()
             st.pyplot(fig2)
 
-        st.success("Done! Use the break-even loss as your max average losing loadout.")
+        st.success("Done! Use the break-even loadout value as your max losing loadout.")
 else:
     st.info("Enter your stats and click **Calculate & Simulate** to see results.")
