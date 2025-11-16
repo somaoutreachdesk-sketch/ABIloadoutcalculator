@@ -148,6 +148,9 @@ if run_button:
 
             fig2, ax2 = plt.subplots()
 
+            # turn off scientific notation on y-axis
+            ax2.ticklabel_format(style="plain", axis="y")
+
             ax2.plot(
                 eq_bad,
                 color="red",
