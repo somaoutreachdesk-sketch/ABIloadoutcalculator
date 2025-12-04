@@ -76,7 +76,6 @@ with col_info:
         "  - too expensive loadouts (negative expectancy)\n"
         "  - break-even loadouts (neutral expectancy)\n"
         "  - efficient loadouts (positive expectancy)\n"
-        "    <br>**(These charts are illustrations, not recommended loadouts.)**\n"
     )
 
 st.markdown("---")
