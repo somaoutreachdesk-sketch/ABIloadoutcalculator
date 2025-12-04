@@ -33,7 +33,7 @@ st.warning(
     "**Disclaimer:**\n"
     "- Results only reflect your **past performance**, so the model cannot predict how different gear or a new playstyle will affect your break-even value.\n"
     "- From my experience, while better gear can help, the survival gains are usually **small relative to the increased loadout value**.\n"
-    "- Also from experience, **playstyle and context** (solo vs squad, aggressive vs careful) tend to have a **much larger impact** on survival than kit tier.\n"
+    "- Also from experience, **playstyle and context** (solo vs squad, aggressive vs careful) tend to have a **much larger impact** on survival than loadout value.\n"
     "- The model is intentionally **simple** because ABI does **not provide detailed per-raid data**, limiting the precision of any calculation.\n"
     "- Consider the break-even loadout a **reference point**, not advice on what to run.\n"
 )
