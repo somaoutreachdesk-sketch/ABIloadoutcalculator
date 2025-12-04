@@ -76,7 +76,7 @@ with col_info:
         "  - too expensive loadouts (negative expectancy)\n"
         "  - break-even loadouts (neutral expectancy)\n"
         "  - efficient loadouts (positive expectancy)\n"
-        "  These charts are **illustrations**, not recommended loadouts.\n"
+        "    <br>**(These charts are illustrations, not recommended loadouts.)**\n"
     )
 
 st.markdown("---")
@@ -135,9 +135,13 @@ if run_button:
             st.pyplot(fig1)
 
         with col_right:
-            st.markdown(
-                "*These are **example simulations** showing how different loadout costs "
-                "impact your long-term profit curve. They are **not recommended loadouts**.*"
+
+            # ---- CHART CLARIFICATION ----
+            st.info(
+                "**Note:** The loadouts shown below (Too Expensive / Break-even / Efficient) "
+                "are **illustrative examples**, not recommended kits. Any loadout above "
+                "your break-even value loses money long-term, and any loadout below it "
+                "is profitable."
             )
 
             loadout_expensive = abs_L_BE * 1.5
