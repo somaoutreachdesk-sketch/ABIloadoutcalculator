@@ -70,7 +70,6 @@ with col_info:
         "to how much you lose per death.\n"
         "  - Example: **2.0 : 1** means your average win is **2× bigger** than your "
         "average losing loadout.\n"
-        "  - Higher R:R = safer and more profitable long-term.\n"
         "- If your real losing loadout is **cheaper** than break-even → you are "
         "**profitable** over many raids.\n"
         "- The simulations show **example outcomes** of running:\n"
