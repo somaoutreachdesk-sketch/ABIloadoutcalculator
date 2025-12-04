@@ -28,6 +28,15 @@ st.set_page_config(page_title="ABI Break-Even Loadout Calculator", layout="wide"
 
 st.title("Arena Breakout Infinite – Break-Even Loadout Calculator")
 
+# -------- DISCLAIMER --------
+st.warning(
+    "**Disclaimer:**\n"
+    "- This model uses your **past performance** to calculate your break-even loadout.\n"
+    "- If your **playstyle changes**, the result will not match your new behavior.\n"
+    "- The model is **simple by necessity** due to limited ABI data.\n"
+    "- Best used as a **rule-of-thumb**, not a gear recommendation tool.\n"
+)
+
 st.markdown(
     "Paste the stats from your **profile overview** page:\n\n"
     "- Total Raids\n"
@@ -174,5 +183,6 @@ if run_button:
             st.pyplot(fig2)
 
         st.success("Done! Use the break-even loadout value as your max losing loadout.")
+
 else:
     st.info("Enter your stats and click **Calculate & Simulate** to see results.")
