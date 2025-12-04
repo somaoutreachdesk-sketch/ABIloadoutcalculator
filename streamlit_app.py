@@ -31,10 +31,11 @@ st.title("Arena Breakout Infinite – Break-Even Loadout Calculator")
 # -------- DISCLAIMER --------
 st.warning(
     "**Disclaimer:**\n"
-    "- This model uses your **past performance** to calculate your break-even loadout.\n"
-    "- If your **playstyle changes**, the result will not match your new behavior.\n"
-    "- The model is **simple by necessity** due to limited ABI data.\n"
-    "- Best used as a **rule-of-thumb**, not a gear recommendation tool.\n"
+    "- Results only reflect your **past performance**, so the model cannot predict how different gear or a new playstyle will affect your break-even value.\n"
+    "- From my experience, while better gear can help, the survival gains are usually **small relative to the increased loadout value**.\n"
+    "- Also from experience, **playstyle and context** (solo vs squad, aggressive vs careful) tend to have a **much larger impact** on survival than kit tier.\n"
+    "- The model is intentionally **simple** because ABI does **not provide detailed per-raid data**, limiting the precision of any calculation.\n"
+    "- Consider the break-even loadout a **reference point**, not advice on what to run.\n"
 )
 
 st.markdown(
@@ -76,6 +77,7 @@ with col_info:
         "  - too expensive loadouts (negative expectancy)\n"
         "  - break-even loadouts (neutral expectancy)\n"
         "  - efficient loadouts (positive expectancy)\n"
+        "    <br>**(These charts are illustrations, not recommended loadouts.)**\n"
     )
 
 st.markdown("---")
